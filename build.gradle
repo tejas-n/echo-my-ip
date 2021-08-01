@@ -1,19 +1,24 @@
-plugins {
-    id 'java-library'
+buildscript {
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.17.0'
+    }
 }
 
-group 'com.tejasn'
-version '0.1.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
+allprojects {
+    plugins.withId("com.vanniktech.maven.publish") {
+        mavenPublish {
+            sonatypeHost = "S01"
+        }
+    }
 }
 
-
-dependencies {
-
-}
-
-test {
-    useJUnitPlatform()
+subprojects {
+    repositories {
+        mavenCentral()
+    }
 }
