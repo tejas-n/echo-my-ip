@@ -61,21 +61,23 @@ public class PublicIpAddress {
         DatagramPacket sendPacket =
                 new DatagramPacket(requestPacket, requestPacket.length, InetAddress.getByName(OPENDNS_SERVER_IP), 53);
         DatagramPacket packet = new DatagramPacket(mBuffer, mBuffer.length);
-        DatagramSocket socket = new DatagramSocket();
-        socket.send(sendPacket);
-        socket.receive(packet);
-        StringBuilder ip4StringBuilder = new StringBuilder();
-        for (int i = 46; i < 50; i++) {
-            ip4StringBuilder.append(mBuffer[i] & 0xFF);
-            if (i != 49) {
-                ip4StringBuilder.append(".");
+        try (DatagramSocket socket = new DatagramSocket()) {
+            socket.setSoTimeout(10000);
+            socket.send(sendPacket);
+            socket.receive(packet);
+            StringBuilder ip4StringBuilder = new StringBuilder();
+            for (int i = 46; i < 50; i++) {
+                ip4StringBuilder.append(mBuffer[i] & 0xFF);
+                if (i != 49) {
+                    ip4StringBuilder.append(".");
+                }
             }
-        }
-        String ipv4Address = ip4StringBuilder.toString();
-        if (!ipv4Address.equals("0.0.0.0")) {
-            return ipv4Address;
-        } else {
-            return null;
+            String ipv4Address = ip4StringBuilder.toString();
+            if (!ipv4Address.equals("0.0.0.0")) {
+                return ipv4Address;
+            } else {
+                return null;
+            }
         }
     }
 }
