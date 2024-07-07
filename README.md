@@ -32,7 +32,7 @@ repositories {
   mavenCentral()
 }
 dependencies {
-  implementation 'com.tejasn:echomyip:0.1.0'
+  implementation 'com.tejasn:echomyip:0.1.1'
 }
 ```
 
